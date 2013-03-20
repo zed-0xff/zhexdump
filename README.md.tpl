@@ -30,6 +30,17 @@ Or install it yourself as:
   puts "START\n#{s}END"
 ```
 
+### String#hexdump
+```ruby
+  "foobar".hexdump
+```
+
+### String#to_hexdump
+```ruby
+  s = 32.upto(63).map(&:chr).join
+  puts s.to_hexdump
+```
+
 ### Custom width
 ```ruby
   ZHexdump.dump "abc123"*2, :width => 3

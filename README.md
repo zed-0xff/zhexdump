@@ -1,6 +1,6 @@
 # ZHexdump
 
-A highly flexible hexdump implementation.
+A very flexible hexdump implementation.
 
 ## Installation
 
@@ -37,6 +37,24 @@ Or install it yourself as:
   START
   00000000: 61 62 63 31 32 33                                 |abc123          |
   END
+```
+
+### String#hexdump
+```ruby
+  "foobar".hexdump
+
+  # output:
+  00000000: 66 6f 6f 62 61 72                                 |foobar          |
+```
+
+### String#to_hexdump
+```ruby
+  s = 32.upto(63).map(&:chr).join
+  puts s.to_hexdump
+
+  # output:
+  00000000: 20 21 22 23 24 25 26 27  28 29 2a 2b 2c 2d 2e 2f  | !"#$%&'()*+,-./|
+  00000010: 30 31 32 33 34 35 36 37  38 39 3a 3b 3c 3d 3e 3f  |0123456789:;<=>?|
 ```
 
 ### Custom width

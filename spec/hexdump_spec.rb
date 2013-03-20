@@ -139,4 +139,23 @@ describe ZHexdump do
     end
     s.should == "00000000: 66 6f 6f                                          |xxx             |\n"
   end
+
+  it "String#hexdump dumps to stdout" do
+    data = "foo"
+    io = StringIO.new
+    begin
+      saved_stdout, $> = $>, io
+      data.hexdump
+    ensure
+      $> = saved_stdout
+    end
+
+    io.rewind
+    io.read.should == "00000000: 66 6f 6f                                          |foo             |\n"
+  end
+
+  it "String#to_hexdump dumps to a new string" do
+    data = "foo"
+    data.to_hexdump.should == "00000000: 66 6f 6f                                          |foo             |\n"
+  end
 end

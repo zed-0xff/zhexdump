@@ -88,6 +88,10 @@ end # module ZHexdump
 
 Zhexdump = ZHexdump
 
+class String
+  include ZHexdump
+end
+
 if $0 == __FILE__
   h = {}
   case ARGV.size
