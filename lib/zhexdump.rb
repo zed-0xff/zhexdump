@@ -30,12 +30,15 @@ module ZHexdump
         offset = 0
       end
 
-      add         = h[:add]    || 0
-      size        = h[:size]   || (data.size-offset)
-      tail        = h[:tail]   || "\n"
-      width       = h[:width]  || 0x10                 # row width, in bytes
-      output      = h[:output] || $>
+      add           = h[:add]    || 0
+      size          = h[:size]   || (data.size-offset)
+      tail          = h[:tail]   || "\n"
+      width         = h[:width]  || 0x10                 # row width, in bytes
+      output        = h[:output] || $>
+      indent        = h[:indent] || 0
+      offset_format = h[:offset_format] || "%08x: "
 
+      indent = ' ' * indent
       size = data.size-offset if size+offset > data.size
 
       prevhex = ''; c = nil; prevdup = false; start = offset
@@ -62,7 +65,7 @@ module ZHexdump
           end
           prevdup = true
         else
-          row = (show_offset ?  ("%08x: " % (offset + add)) : '') + hex
+          row = indent + (show_offset ? (offset_format % (offset + add)) : '') + hex
           yield(row, offset+add, ascii) if block_given?
           row << ' |' + ascii + "|"
           output << "\n" if offset > start
@@ -75,7 +78,7 @@ module ZHexdump
         break if size <= 0
       end
       if show_offset && prevdup
-        row = "%08x: " % (offset + add)
+        row = indent + (offset_format % (offset + add))
         yield(row) if block_given?
         output << "\n" << row
       end
