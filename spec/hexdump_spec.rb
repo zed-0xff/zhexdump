@@ -1,3 +1,4 @@
+#coding: binary
 require 'spec_helper'
 require 'stringio'
 
@@ -51,6 +52,17 @@ describe ZHexdump do
     s = ''
     ZHexdump.dump data, :output => s, :offset => 2, :size => 3
     s.should == "00000002: 6f 62 61                                          |oba             |\n"
+  end
+
+  it "respects :indent" do
+    data = 'foobar' + "\x00"*100
+    s = ''
+    ZHexdump.dump data, :output => s, :indent => 2
+    a = s.split("\n")
+    a[0].should == "  00000000: 66 6f 6f 62 61 72 00 00  00 00 00 00 00 00 00 00  |foobar..........|"
+    a[1].should == "  00000010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|"
+    a[2].should == "  *"
+    a[3].should == "  00000060: 00 00 00 00 00 00 00 00  00 00                    |..........      |"
   end
 
   it "adds :add to offset shown" do

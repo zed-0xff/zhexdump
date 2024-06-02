@@ -57,7 +57,7 @@ module ZHexdump
         end
 
         if dedup && hex == prevhex
-          row = "*"
+          row = indent + "*"
           yield(row, offset+add, ascii) if block_given?
           unless prevdup
             output << "\n" if offset > start
