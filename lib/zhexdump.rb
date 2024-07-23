@@ -19,7 +19,15 @@ module ZHexdump
     r
   end
 
+  @defaults = {}
+
   class << self
+    attr_accessor :defaults
+
+    def _get_param(h, key, default)
+      h[key] || defaults[key] || default
+    end
+
     def dump data, h = {}
       offset      = h.fetch(:offset, 0)
       dedup       = h.fetch(:dedup, true)
@@ -30,13 +38,13 @@ module ZHexdump
         offset = 0
       end
 
-      add           = h[:add]    || 0
-      size          = h[:size]   || (data.size-offset)
-      tail          = h[:tail]   || "\n"
-      width         = h[:width]  || 0x10                 # row width, in bytes
-      output        = h[:output] || $>
-      indent        = h[:indent] || 0
-      offset_format = h[:offset_format] || "%08x: "
+      add           = _get_param(h, :add, 0)
+      size          = _get_param(h, :size, data.size-offset)
+      tail          = _get_param(h, :tail, "\n")
+      width         = _get_param(h, :width, 16)
+      output        = _get_param(h, :output, $stdout)
+      indent        = _get_param(h, :indent, 0)
+      offset_format = _get_param(h, :offset_format, "%08x: ")
 
       indent = ' ' * indent
       size = data.size-offset if size+offset > data.size
