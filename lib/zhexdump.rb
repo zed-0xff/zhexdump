@@ -47,8 +47,9 @@ module ZHexdump
         width.times do |i|
           hex << ' ' if i%8==0 && i>0
           if c = ((size > 0) && data[offset+i])
-            hex << "%02x " % c.ord
-            ascii << ((32..126).include?(c.ord) ? c : '.')
+            ord = c.ord
+            hex << "%02x " % ord
+            ascii << (ord == 0 ? ' ' : ((32..126).include?(ord) ? c : '.'))
           else
             hex << '   '
             ascii << ' '
