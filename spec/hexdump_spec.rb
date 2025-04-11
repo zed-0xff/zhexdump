@@ -180,4 +180,9 @@ describe ZHexdump do
     data = "foobarbaz"
     data.to_hexdump(group_size: 3, group_separator: "| ").should == "00000000: 66 6f 6f | 62 61 72 | 62 61 7a |          |          |     |foobarbaz       |\n"
   end
+
+  it "respects :show_ascii" do
+    data = "foobarbaz" * 2 
+    data.to_hexdump(show_ascii: false).should == "00000000: 66 6f 6f 62 61 72 62 61  7a 66 6f 6f 62 61 72 62\n00000010: 61 7a\n"
+  end
 end

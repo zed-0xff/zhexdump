@@ -25,7 +25,7 @@ module ZHexdump
     attr_accessor :defaults
 
     def _get_param(h, key, default)
-      h[key] || defaults[key] || default
+      h.fetch(key, defaults.fetch(key, default))
     end
 
     def dump data, h = {}
@@ -47,6 +47,7 @@ module ZHexdump
       offset_format = _get_param(h, :offset_format, "%08x: ")
       group_size    = _get_param(h, :group_size, 8)
       group_sep     = _get_param(h, :group_separator, ' ')
+      show_ascii    = _get_param(h, :show_ascii, true)
 
       indent = ' ' * indent
       size = data.size-offset if size+offset > data.size
@@ -78,7 +79,11 @@ module ZHexdump
         else
           row = indent + (show_offset ? (offset_format % (offset + add)) : '') + hex
           yield(row, offset+add, ascii) if block_given?
-          row << ' |' + ascii + "|"
+          if show_ascii
+            row << ' |' + ascii + "|"
+          else
+            row.rstrip! # remove trailing spaces
+          end
           output << "\n" if offset > start
           output << row
           prevdup = false
