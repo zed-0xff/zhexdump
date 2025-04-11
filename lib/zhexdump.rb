@@ -45,6 +45,8 @@ module ZHexdump
       output        = _get_param(h, :output, $stdout)
       indent        = _get_param(h, :indent, 0)
       offset_format = _get_param(h, :offset_format, "%08x: ")
+      group_size    = _get_param(h, :group_size, 8)
+      group_sep     = _get_param(h, :group_separator, ' ')
 
       indent = ' ' * indent
       size = data.size-offset if size+offset > data.size
@@ -53,7 +55,7 @@ module ZHexdump
       while true
         ascii = ''; hex = ''
         width.times do |i|
-          hex << ' ' if i%8==0 && i>0
+          hex << group_sep if group_size > 0 && i > 0 && i % group_size == 0
           if c = ((size > 0) && data[offset+i])
             ord = c.ord
             hex << "%02x " % ord

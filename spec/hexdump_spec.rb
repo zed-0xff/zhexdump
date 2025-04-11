@@ -170,4 +170,14 @@ describe ZHexdump do
     data = "foo"
     data.to_hexdump.should == "00000000: 66 6f 6f                                          |foo             |\n"
   end
+
+  it "respects :group size" do
+    data = "foobarbaz"
+    data.to_hexdump(group_size: 3).should == "00000000: 66 6f 6f  62 61 72  62 61 7a                          |foobarbaz       |\n"
+  end
+
+  it "respects :group_separator" do
+    data = "foobarbaz"
+    data.to_hexdump(group_size: 3, group_separator: "| ").should == "00000000: 66 6f 6f | 62 61 72 | 62 61 7a |          |          |     |foobarbaz       |\n"
+  end
 end
