@@ -185,4 +185,19 @@ describe ZHexdump do
     data = "foobarbaz" * 2 
     data.to_hexdump(show_ascii: false).should == "00000000: 66 6f 6f 62 61 72 62 61  7a 66 6f 6f 62 61 72 62\n00000010: 61 7a\n"
   end
+
+  it "respects :byte_format" do
+    data = "foobarbaz"
+    data.to_hexdump(byte_format: "%03o").should == "00000000: 146 157 157 142 141 162 142 141  172                       |foobarbaz       |\n"
+  end
+
+  it "respects :byte_separator" do
+    data = "foobarbaz"
+    data.to_hexdump(byte_separator: ":").should == "00000000: 66:6f:6f:62:61:72:62:61: 7a:  :  :  :  :  :  :  : |foobarbaz       |\n"
+  end
+
+  it "respects :no_byte_str" do
+    data = "foobarbaz"
+    data.to_hexdump(no_byte_str: "??").should == "00000000: 66 6f 6f 62 61 72 62 61  7a ?? ?? ?? ?? ?? ?? ??  |foobarbaz       |\n"
+  end
 end

@@ -49,6 +49,10 @@ module ZHexdump
       group_sep     = _get_param(h, :group_separator, ' ')
       show_ascii    = _get_param(h, :show_ascii, true)
 
+      byte_format   = _get_param(h, :byte_format, "%02x")
+      no_byte_str   = _get_param(h, :no_byte_str, '  ')
+      byte_sep      = _get_param(h, :byte_separator, ' ')
+
       indent = ' ' * indent
       size = data.size-offset if size+offset > data.size
 
@@ -59,10 +63,10 @@ module ZHexdump
           hex << group_sep if group_size > 0 && i > 0 && i % group_size == 0
           if c = ((size > 0) && data[offset+i])
             ord = c.ord
-            hex << "%02x " % ord
+            hex << (byte_format % ord) << byte_sep
             ascii << (ord == 0 ? ' ' : ((32..126).include?(ord) ? c : '.'))
           else
-            hex << '   '
+            hex << no_byte_str << byte_sep
             ascii << ' '
           end
           size-=1
